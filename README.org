@@ -1,0 +1,4 @@
+* Robosuite with Shared autonomy tasks
+TODO-list:
+- collect robosuite demos and convert to robomimic format
+- diff policy training interface 

@@ -1,8 +1,21 @@
 from setuptools import setup, find_packages
+import re
 
 # Read requirements from requirements.txt
 with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
+    requirements_text = f.read()
+
+# Parse regular dependencies (excluding editable ones)
+requirements = []
+for line in requirements_text.splitlines():
+    line = line.strip()
+    # Skip empty lines and comments
+    if not line or line.startswith('#'):
+        continue
+    # Skip editable installs (starting with -e)
+    if line.startswith('-e'):
+        continue
+    requirements.append(line)
 
 setup(
     name="sa_suite",

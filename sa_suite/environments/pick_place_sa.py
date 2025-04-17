@@ -429,10 +429,6 @@ class PickPlaceSA(ManipulationEnv):
                 res = False
                 break  # if the object is in any bin, we can stop checking
 
-        print("======================")
-        print("IS IN BIN: ", not res)  # Note: printing the opposite of res for clarity
-        print("======================")
-
         return res
 
     def _get_placement_initializer(self):

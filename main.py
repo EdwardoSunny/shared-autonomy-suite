@@ -1,9 +1,6 @@
-"""
-Example script showing how to use the custom environments.
-"""
 import robosuite as suite
 
-# Import sa_suite to register environments and patch robosuite
+# Import sa_suite to register custom shared autonomy environments and patch robosuite
 # This must be done before calling robosuite.make
 import sa_suite
 import numpy as np

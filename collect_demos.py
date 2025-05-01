@@ -14,13 +14,12 @@ from glob import glob
 import h5py
 import numpy as np
 
+import sa_suite
 import robosuite as suite
 from robosuite.controllers import load_composite_controller_config
 from robosuite.controllers.composite.composite_controller import WholeBody
 from robosuite.wrappers import DataCollectionWrapper, VisualizationWrapper
 
-# monkey patch custom tasks
-import sa_suite
 
 def collect_human_trajectory(env, device, arm, max_fr):
     """
@@ -305,14 +304,19 @@ if __name__ == "__main__":
         config["env_configuration"] = args.config
 
     # Create environment
+    cameras = args.camera 
+    if len(args.camera) == 1:
+        cameras = args.camera[0]
+
     env = suite.make(
         **config,
         has_renderer=True,
         renderer=args.renderer,
-        has_offscreen_renderer=False,
-        render_camera=args.camera,
+        has_offscreen_renderer=True,
+        render_camera=cameras,
         ignore_done=True,
-        use_camera_obs=False,
+        use_camera_obs=True,
+        camera_names=cameras, 
         reward_shaping=True,
         control_freq=20,
     )

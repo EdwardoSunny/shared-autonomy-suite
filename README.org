@@ -1,4 +1,30 @@
 * Robosuite with Shared autonomy tasks
-TODO-list:
-- collect robosuite demos and convert to robomimic format
-- diff policy training interface 
+** Spacemouse
+When you want to collect data using spacemouse as the controller, make sure you change the product ID through the robosuite macros. First locate your robosuite installation, change this part of the =macros.py=:
+
+#+begin_src python
+# Spacemouse settings. Used by SpaceMouse class in robosuite/devices/spacemouse.py
+SPACEMOUSE_VENDOR_ID = 9583
+SPACEMOUSE_PRODUCT_ID = 50741
+#+end_src
+
+Also make sure to use =sudo= to run if you are running into any =cannot open= issues, something like:
+
+#+begin_src bash
+sudo /path/to/your/virtual/env/python collect_demos.py
+#+end_src
+
+** Data Conversion
+Data collected through robosuite must be converted to the robomimic format. First convert the robosuite data using:
+#+begin_src bash
+python sa_suite/scripts/convert_robosuite.py --dataset /path/to/demo.hdf5
+#+end_src
+
+This will convert the format in place (input file will be directly converted).
+
+Training diffusion policy also requires observations directly. You can extract using:
+#+begin_src bash
+python sa_suite/scripts/dataset_states_to_obs.py --dataset /path/to/demo.hdf5 --output_name image_dense.hdf5 --done_mode 2 --camera_names agentview robot0_eye_in_hand --camera_height 84 --camera_width 84
+#+end_src
+
+The final output here (default =image_dense.hdf5=) can then be used for training diffusion policy.

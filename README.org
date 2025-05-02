@@ -11,7 +11,7 @@ SPACEMOUSE_PRODUCT_ID = 50741
 Also make sure to use =sudo= to run if you are running into any =cannot open= issues, something like:
 
 #+begin_src bash
-sudo /path/to/your/virtual/env/python collect_demos.py
+sudo /path/to/your/virtual/env/python collect_demos.py --robots Panda --camera agentview --environment PickPlaceSA --directory ./demos
 #+end_src
 
 ** Data Conversion

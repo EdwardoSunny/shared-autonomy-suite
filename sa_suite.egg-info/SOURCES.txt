@@ -3,9 +3,12 @@ sa_suite/__init__.py
 sa_suite.egg-info/PKG-INFO
 sa_suite.egg-info/SOURCES.txt
 sa_suite.egg-info/dependency_links.txt
-sa_suite.egg-info/entry_points.txt
 sa_suite.egg-info/requires.txt
 sa_suite.egg-info/top_level.txt
+sa_suite/controllers/__init__.py
+sa_suite/controllers/spacemouse_config.py
+sa_suite/controllers/spacemouse_controller.py
+sa_suite/controllers/utils.py
 sa_suite/utils/__init__.py
 sa_suite/utils/monkey_patch.py
 sa_suite/utils/register_envs.py

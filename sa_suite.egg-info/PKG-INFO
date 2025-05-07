@@ -1,12 +1,47 @@
-Metadata-Version: 2.1
-Name: sa-suite
+Metadata-Version: 2.4
+Name: sa_suite
 Version: 0.1.0
 Summary: Shared autonomy tasks for robosuitek
-Home-page: UNKNOWN
 Author: Edward Sun
 Author-email: edward.sun2015@gmail.com
-License: UNKNOWN
-Platform: UNKNOWN
-
-UNKNOWN
-
+Requires-Dist: absl-py==2.2.2
+Requires-Dist: cloudpickle==3.1.1
+Requires-Dist: etils==1.12.2
+Requires-Dist: evdev==1.9.1
+Requires-Dist: exceptiongroup==1.2.2
+Requires-Dist: Farama-Notifications==0.0.4
+Requires-Dist: fsspec==2025.3.2
+Requires-Dist: glfw==2.8.0
+Requires-Dist: gymnasium==1.1.1
+Requires-Dist: h5py==3.13.0
+Requires-Dist: hidapi==0.14.0.post2
+Requires-Dist: importlib_resources==6.5.2
+Requires-Dist: iniconfig==2.1.0
+Requires-Dist: llvmlite==0.44.0
+Requires-Dist: mink==0.0.7
+Requires-Dist: mujoco==3.3.0
+Requires-Dist: numba==0.61.0
+Requires-Dist: numpy==1.26.4
+Requires-Dist: opencv-python==4.11.0.86
+Requires-Dist: packaging==24.2
+Requires-Dist: pillow==11.1.0
+Requires-Dist: pluggy==1.5.0
+Requires-Dist: pynput==1.8.1
+Requires-Dist: PyOpenGL==3.1.9
+Requires-Dist: pytest==8.3.5
+Requires-Dist: python-xlib==0.33
+Requires-Dist: qpsolvers==4.5.0
+Requires-Dist: quadprog==0.1.13
+Requires-Dist: robosuite==1.5.1
+Requires-Dist: scipy==1.15.2
+Requires-Dist: six==1.17.0
+Requires-Dist: termcolor==3.0.1
+Requires-Dist: tomli==2.2.1
+Requires-Dist: tqdm==4.67.1
+Requires-Dist: typing_extensions==4.13.1
+Requires-Dist: usd-core==25.2.post1
+Requires-Dist: zipp==3.21.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: requires-dist
+Dynamic: summary

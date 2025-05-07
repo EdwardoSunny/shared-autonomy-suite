@@ -409,7 +409,6 @@ class PickPlaceSA(ManipulationEnv):
 
             if hover_rewards_for_individual_objects:
                 r_hover = np.max(hover_rewards_for_individual_objects)
-        print(f"HOVER: {r_hover}")
         return r_reach, r_grasp, r_lift, r_hover
 
     def not_in_bin(self, obj_pos, bin_id):

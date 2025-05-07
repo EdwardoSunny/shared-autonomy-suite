@@ -55,10 +55,12 @@ import numpy as np
 from copy import deepcopy
 from tqdm import tqdm
 
-import sa_suite.utils.robomimic_utils.tensor_utils as TensorUtils
-import sa_suite.utils.robomimic_utils.file_utils as FileUtils
-import sa_suite.utils.robomimic_utils.env_utils as EnvUtils
-from sa_suite.utils.robomimic_utils.env_base import EnvBase
+import sa_suite
+
+import robomimic.utils.tensor_utils as TensorUtils
+import robomimic.utils.file_utils as FileUtils
+import robomimic.utils.env_utils as EnvUtils
+from robomimic.envs.env_base import EnvBase
 
 
 def extract_trajectory(

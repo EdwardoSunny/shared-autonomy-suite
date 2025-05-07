@@ -191,8 +191,8 @@ class PickPlaceSA(ManipulationEnv):
         use_object_obs=True,
         reward_scale=1.0,
         reward_shaping=False,
-        single_object_mode=1,
-        object_type=None,
+        single_object_mode=2,
+        object_type="bread",
         has_renderer=False,
         has_offscreen_renderer=True,
         render_camera="frontview",
@@ -375,31 +375,41 @@ class PickPlaceSA(ManipulationEnv):
         # hover reward for getting object above bin
         r_hover = 0.0
         if active_objs:
-            target_bin_ids = [self.object_to_id[active_obj.name.lower()] for active_obj in active_objs]
-            # segment objects into left of the bins and above the bins
-            object_xy_locs = self.sim.data.body_xpos[[self.obj_body_id[active_obj.name] for active_obj in active_objs]][
-                :, :2
-            ]
-            y_check = (
-                np.abs(object_xy_locs[:, 1] - self.target_bin_placements[target_bin_ids, 1]) < self.bin_size[1] / 4.0
-            )
-            x_check = (
-                np.abs(object_xy_locs[:, 0] - self.target_bin_placements[target_bin_ids, 0]) < self.bin_size[0] / 4.0
-            )
-            objects_above_bins = np.logical_and(x_check, y_check)
-            objects_not_above_bins = np.logical_not(objects_above_bins)
-            dists = np.linalg.norm(self.target_bin_placements[target_bin_ids, :2] - object_xy_locs, axis=1)
-            # objects to the left get r_lift added to hover reward,
-            # those on the right get max(r_lift) added (to encourage dropping)
-            r_hover_all = np.zeros(len(active_objs))
-            r_hover_all[objects_above_bins] = lift_mult + (1 - np.tanh(10.0 * dists[objects_above_bins])) * (
-                hover_mult - lift_mult
-            )
-            r_hover_all[objects_not_above_bins] = r_lift + (1 - np.tanh(10.0 * dists[objects_not_above_bins])) * (
-                hover_mult - lift_mult
-            )
-            r_hover = np.max(r_hover_all)
+            # Get XY coordinates of the centers of all 4 physical bin slots
+            all_bins_xy_coords = self.target_bin_placements[:, :2]
+            object_xy_locs = self.sim.data.body_xpos[[self.obj_body_id[active_obj.name] for active_obj in active_objs]][:, :2]
+            hover_rewards_for_individual_objects = []
+            
+            for i in range(len(active_objs)): # Loop through each active object
+                obj_xy = object_xy_locs[i]
+                # Calculate distances from this object to ALL physical bin centers
+                dists_to_all_bins_for_this_object = np.linalg.norm(all_bins_xy_coords - obj_xy, axis=1)
+                min_dist_to_a_bin = np.min(dists_to_all_bins_for_this_object)
+                idx_of_closest_bin = np.argmin(dists_to_all_bins_for_this_object)
+                closest_bin_xy_center = all_bins_xy_coords[idx_of_closest_bin]
+                # Check if the current object is "above" its closest bin
+                # self.bin_size[0] is the width of the 2x2 bin area, so self.bin_size[0]/2 is width of one slot.
+                # self.bin_size[0]/4.0 is thus half the width of one slot.
+                is_above_this_objects_closest_bin = (
+                    np.abs(obj_xy[0] - closest_bin_xy_center[0]) < self.bin_size[0] / 4.0 and
+                    np.abs(obj_xy[1] - closest_bin_xy_center[1]) < self.bin_size[1] / 4.0
+                )
 
+                current_obj_hover_reward = 0.0
+                if is_above_this_objects_closest_bin:
+                    current_obj_hover_reward = lift_mult + (1 - np.tanh(10.0 * min_dist_to_a_bin)) * (
+                        hover_mult - lift_mult
+                    )
+                else: # Object is not directly above its closest bin, but may be near
+                    current_obj_hover_reward = r_lift + (1 - np.tanh(10.0 * min_dist_to_a_bin)) * (
+                        hover_mult - lift_mult
+                    )
+                
+                hover_rewards_for_individual_objects.append(current_obj_hover_reward) 
+
+            if hover_rewards_for_individual_objects:
+                r_hover = np.max(hover_rewards_for_individual_objects)
+        print(f"HOVER: {r_hover}")
         return r_reach, r_grasp, r_lift, r_hover
 
     def not_in_bin(self, obj_pos, bin_id):

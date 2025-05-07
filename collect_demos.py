@@ -20,7 +20,6 @@ from robosuite.controllers import load_composite_controller_config
 from robosuite.controllers.composite.composite_controller import WholeBody
 from robosuite.wrappers import DataCollectionWrapper, VisualizationWrapper
 
-
 def collect_human_trajectory(env, device, arm, max_fr):
     """
     Use the device (keyboard or SpaceNav 3D mouse) to collect a demonstration.
@@ -183,6 +182,8 @@ def gather_demonstrations_as_hdf5(directory, out_dir, env_info):
             assert len(states) == len(actions)
 
             num_eps += 1
+            print(f"SAVED: {num_eps}")
+            print(dic.keys())
             ep_data_grp = grp.create_group("demo_{}".format(num_eps))
 
             # store model xml as an attribute
